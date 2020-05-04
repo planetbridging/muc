@@ -182,9 +182,10 @@ def SetupSaving(newdir):
         pass
         #print("Directory " , dirName ,  " already exists")
 
-def SetupFindingClients():
+def SetupFindingClients(ip):
+    ip = ip.replace("find ", "")
     localip = socket.gethostbyname(socket.gethostname())
-    localip = "192.168.1.1"
+    localip = ip
     divip = localip.split(".")
     #print(divip)
         
@@ -221,16 +222,22 @@ def RemoteManagement(ipc):
 #ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 #ROOT_DIR = ROOT_DIR.replace("\\","//")
 
-SetupSaving(dirName)
-SetupSaving(dirName + "//" + timestampStr)
-SetupFindingClients()
+
+#SetupFindingClients()
 
 ShowCountClients()
 while True:
     command = raw_input("Shell: ")
     if command == "quit":
         break
+    
+    if command.startswith("find"):
+        SetupFindingClients(command)
         
+    if command == "save":
+        SetupSaving(dirName)
+        SetupSaving(dirName + "//" + timestampStr)
+    
     if command == "list":
         ShowConnectedClients()
         
